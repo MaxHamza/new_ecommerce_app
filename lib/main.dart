@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       child: MaterialApp(
         onGenerateRoute: RouteGenerator.getRoute,
-        initialRoute: RoutesManager.mainRoute,
+        initialRoute: RoutesManager.storeDetailsRoute,
         // theme: getApplicationTheme(),
       debugShowCheckedModeBanner: false,
       ),
