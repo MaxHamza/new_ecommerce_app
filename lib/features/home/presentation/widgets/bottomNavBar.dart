@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class CustomBottomNav extends StatefulWidget {
+  final Function(int) onTabChanged;
+  const CustomBottomNav({super.key, required this.onTabChanged});
   @override
   State<CustomBottomNav> createState() => _CustomBottomNavState();
 }
@@ -13,15 +15,12 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Page $currentIndex")),
-
-      bottomNavigationBar: Stack(
+    return Stack(
         clipBehavior: Clip.none,
         children: [
           Container(
-            height: 70.h,
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            height: 75.h,
+            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             decoration: BoxDecoration(
               color: ColorManager.primary,
               borderRadius: BorderRadius.circular(40.r),
@@ -32,18 +31,19 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
                 _buildItem(Icons.store, "SHOP", 0),
                 // _buildItem(Icons.search, "SEARCH", 1),
                 Gap(60.w),
-                _buildItem(Icons.person, "Cart", 1),
+                _buildItem(Icons.card_travel_rounded, "Cart", 1),
               ],
             ),
           ),
 
           // زر Cart الدائري
           Positioned(
-            top: -25,
-            left: MediaQuery.of(context).size.width / 2 - 30,
+            top: -25.h,
+            left: 0.5.sw - 30.w,
             child: GestureDetector(
               onTap: () {
                 setState(() => currentIndex = 2);
+                widget.onTabChanged(currentIndex);
               },
               child: Container(
                 width: 60.w,
@@ -52,19 +52,15 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
                   color: ColorManager.activeButton,
                   shape: BoxShape.circle,
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 8.r,
-                    ),
+                    BoxShadow(color: Colors.black26, blurRadius: 8.r),
                   ],
                 ),
-                child: const Icon(Icons.add, color: Colors.white),
+                child: Icon(Icons.add, color: Colors.white),
               ),
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildItem(IconData icon, String label, int index) {
@@ -73,6 +69,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
     return GestureDetector(
       onTap: () {
         setState(() => currentIndex = index);
+        widget.onTabChanged(currentIndex);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +78,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
             icon,
             color: isSelected ? ColorManager.activeButton : Colors.grey,
           ),
-           Gap( 4.h),
+          Gap(4.h),
           Text(
             label,
             style: TextStyle(
