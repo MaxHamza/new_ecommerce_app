@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "329807918875",
+    "project_id": "ebtech-task",
+    "storage_bucket": "ebtech-task.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329807918875:android:9216de428907b80d4d85be",
+        "android_client_info": {
+          "package_name": "com.example.eb_tech_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXXeoVKzNTido3wF4WVjeI7JEgc5wITs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
