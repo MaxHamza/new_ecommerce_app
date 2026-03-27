@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/resources/routes_manager.dart';
+import 'core/resources/theme_manager.dart';
+
 
 void main()async{
   runApp(MyApp());
@@ -18,6 +21,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp(
+        onGenerateRoute: RouteGenerator.getRoute,
+        initialRoute: RoutesManager.mainRoute,
+        // theme: getApplicationTheme(),
       debugShowCheckedModeBanner: false,
       ),
     );

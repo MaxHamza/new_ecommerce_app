@@ -13,11 +13,11 @@ class FontWeightManager{
   static final FontWeight light=FontWeight.w300;
 }
 class FontSize{
-  static  double s12=12.sp;
-  static  double s14=14.sp;
-  static  double s16=16.sp;
-  static  double s17=17.sp;
-  static  double s18=18.sp;
-  static  double s20=20.sp;
-  static  double s22=22.sp;
+  static double get s12 => 12;
+  static double get s14 => 14;
+  static double get s16 => 16;
+  static double get s17 => 17;
+  static double get s18 => 18;
+  static double get s20 => 20;
+  static double get s22 => 22;
 }
