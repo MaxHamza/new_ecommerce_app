@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
         automaticallyImplyLeading: false,
         backgroundColor: ColorManager.primary,
         elevation: 0.5,
-        title: Text('Lumina',style: getBoldStyle(color: ColorManager.primaryText,fontSize: 20.sp),),
+        title: Text('Lumina',style: getBoldStyle(color: ColorManager.secondaryText,fontSize: 20.sp),),
       ),
       body: pages[currentIndex],
       backgroundColor: ColorManager.primary,
