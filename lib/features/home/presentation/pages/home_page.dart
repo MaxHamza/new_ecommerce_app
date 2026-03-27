@@ -1,7 +1,7 @@
 import 'package:eb_tech_task/core/resources/color_manager.dart';
 import 'package:eb_tech_task/core/share/custom_button.dart';
-import 'package:eb_tech_task/features/home/presentation/widgets/exploreNow.dart';
-import 'package:eb_tech_task/features/home/presentation/widgets/product_card.dart';
+import 'package:eb_tech_task/features/home/presentation/widgets/home/exploreNow.dart';
+import 'package:eb_tech_task/features/home/presentation/widgets/home/product_card.dart';
 import 'package:eb_tech_task/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

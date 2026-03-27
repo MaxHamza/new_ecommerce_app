@@ -117,7 +117,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: Container(
                     height: 50.h,
                     decoration: BoxDecoration(
-                      color: ColorManager.secondary,
+                      color: Color(0xffFFD2CF),
                       borderRadius: BorderRadius.circular(25.r),
                     ),
                     padding: EdgeInsets.all(10.r),

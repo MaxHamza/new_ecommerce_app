@@ -1,4 +1,5 @@
 import 'package:eb_tech_task/core/resources/color_manager.dart';
+import 'package:eb_tech_task/features/home/presentation/pages/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,7 +20,8 @@ class _MainPageState extends State<MainPage> {
 
   final pages = [
     HomePage()
-    , Text("Cart"), Text("Add")];
+    , CartPage(),
+    Text("Add")];
 
   @override
   Widget build(BuildContext context) {

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../core/resources/color_manager.dart';
-import '../../../../core/resources/style_manager.dart';
-import '../../../../core/share/custom_button.dart';
-import '../../../../main.dart';
+import '../../../../../core/resources/color_manager.dart';
+import '../../../../../core/resources/style_manager.dart';
+import '../../../../../core/share/custom_button.dart';
+import '../../../../../main.dart';
 
 class ExploreNow extends StatelessWidget {
   const ExploreNow({super.key});
