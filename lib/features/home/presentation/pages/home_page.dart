@@ -60,17 +60,15 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Gap(20.h),
-         Expanded(
-           child: ListView.separated(
-             physics: NeverScrollableScrollPhysics(),
-               shrinkWrap: true,
-               itemBuilder: (context,index){
-             return   ProductCard();
-           },
-               separatorBuilder: (context,index){
-           return  Gap(10.h);
-           }, itemCount: 5),
-         )
+         ListView.separated(
+           physics: NeverScrollableScrollPhysics(),
+             shrinkWrap: true,
+             itemBuilder: (context,index){
+           return   ProductCard();
+         },
+             separatorBuilder: (context,index){
+         return  Gap(10.h);
+         }, itemCount: 5)
         ],
       ),
     );
