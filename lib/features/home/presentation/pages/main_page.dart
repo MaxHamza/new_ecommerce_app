@@ -1,7 +1,11 @@
+import 'package:eb_tech_task/core/resources/api.dart';
 import 'package:eb_tech_task/core/resources/color_manager.dart';
+import 'package:eb_tech_task/features/home/data/repositories/product_repository.dart';
+import 'package:eb_tech_task/features/home/presentation/manager/fetch_products/cubit.dart';
 import 'package:eb_tech_task/features/home/presentation/pages/cart_page.dart';
 import 'package:eb_tech_task/features/home/presentation/pages/insert_product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/resources/style_manager.dart';
@@ -20,7 +24,9 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
 
   final pages = [
-    HomePage()
+    BlocProvider(
+        create: (context)=>ProductCubit(ProductRepository(DioService())),
+        child: HomePage())
     , CartPage(),
     InsertProduct()];
 

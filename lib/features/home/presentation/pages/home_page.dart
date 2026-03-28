@@ -1,74 +1,130 @@
+import 'package:eb_tech_task/core/resources/app_constant.dart';
 import 'package:eb_tech_task/core/resources/color_manager.dart';
 import 'package:eb_tech_task/core/share/custom_button.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/home/exploreNow.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/home/product_card.dart';
 import 'package:eb_tech_task/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/resources/style_manager.dart';
+import '../manager/fetch_products/cubit.dart';
+import '../manager/fetch_products/state.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int selectedIndex = 0;
+
+  final categories = [
+    "all",
+    "men's clothing",
+    "women's clothing",
+    "jewelery",
+    "electronics",
+  ];
+
+  @override
+  void initState() {
+    context.read<ProductCubit>().getProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      height: height,
-      decoration: BoxDecoration(color: ColorManager.primary),
+      color: ColorManager.primary,
       child: ListView(
         children: [
           Gap(10.h),
           ExploreNow(),
           Gap(10.h),
+
+          /// 🔥 categories
           SizedBox(
             height: 30.h,
             child: ListView.separated(
-              separatorBuilder: (context, index) {
-                return Gap(5.w);
-              },
-              physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              separatorBuilder: (_, __) => Gap(5.w),
               itemBuilder: (context, index) {
-              return  Container(
-                padding: EdgeInsets.all(5.r),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.r),
-                    color: index == 0 ? null : ColorManager.secondary,
-                    gradient: index == 0
-                        ? LinearGradient(
-                      colors: [
-                        ColorManager.activeButton,
-                        Color(0xffFF784D),
-                      ],
-                    )
-                        : null,
-                  ),
-                  height: 30.h,
-                  child: Text(
-                    'All Objects',
-                    style: getRegularStyle(
-                      color: index == 0 ? ColorManager.white : ColorManager.primaryText,
-                      fontSize: 16.sp,
+                final isSelected = selectedIndex == index;
+
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+
+                    context
+                        .read<ProductCubit>()
+                        .filterByCategory(categories[index]);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.r),
+                      color: isSelected ? null : ColorManager.secondary,
+                      gradient: isSelected
+                          ? LinearGradient(
+                        colors: [
+                          ColorManager.activeButton,
+                          Color(0xffFF784D),
+                        ],
+                      )
+                          : null,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      categories[index] == "all"
+                          ? "All Objects"
+                          : categories[index],
+                      style: getRegularStyle(
+                        color: isSelected
+                            ? ColorManager.white
+                            : ColorManager.primaryText,
+                        fontSize: 14.sp,
+                      ),
                     ),
                   ),
                 );
               },
-              itemCount: 5,
             ),
           ),
+
           Gap(20.h),
-         ListView.separated(
-           physics: NeverScrollableScrollPhysics(),
-             shrinkWrap: true,
-             itemBuilder: (context,index){
-           return   ProductCard();
-         },
-             separatorBuilder: (context,index){
-         return  Gap(10.h);
-         }, itemCount: 5)
+
+          /// 🔥 products
+          BlocBuilder<ProductCubit, ProductState>(
+            builder: (context, state) {
+              if (state is ProductLoading) {
+                return Container(
+                    height: 200.h,
+                    child: Center(child: CircularProgressIndicator()));
+              } else if (state is ProductSuccess) {
+                return ListView.separated(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.products.length,
+                  separatorBuilder: (_, __) => Gap(10.h),
+                  itemBuilder: (context, index) {
+                    return ProductCard(product: state.products[index]);
+                  },
+                );
+              } else if (state is ProductError) {
+                return Text(state.message);
+              }
+              return SizedBox();
+            },
+          ),
         ],
       ),
     );

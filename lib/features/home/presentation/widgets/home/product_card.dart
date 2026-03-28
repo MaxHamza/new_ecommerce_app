@@ -5,31 +5,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
+import '../../../data/models/product_model.dart';
+
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+  final ProductModel product;
+
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-
       color: ColorManager.primary,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.r),
         child: Column(
           children: [
-            Image.asset('assets/images/product.png',height: 400.h,width: width,fit: BoxFit.fill,),
+            Image.network(
+              product.image,
+              height: 200.h,
+              width: width,
+              fit: BoxFit.contain,
+            ),
+
             Gap(10.h),
+
             Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Sonic Over-Ear',style: getBoldStyle(color:ColorManager.secondaryText,fontSize: 16.sp),),
-                    Text('Matte Black Edition',style: getRegularStyle(color:ColorManager.secondaryText,fontSize: 14.sp),)
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getBoldStyle(
+                          color: ColorManager.secondaryText,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                      Text(
+                        product.category,
+                        style: getRegularStyle(
+                          color: ColorManager.primaryText,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Spacer(),
-                Text('16\$',style: getRegularStyle(color:ColorManager.primaryText,fontSize: 16.sp),),
+
+                Text(
+                  '${product.price}\$',
+                  style: getRegularStyle(
+                    color: ColorManager.primaryText,
+                    fontSize: 16.sp,
+                  ),
+                ),
               ],
             )
           ],
