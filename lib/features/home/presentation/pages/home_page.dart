@@ -1,6 +1,8 @@
 import 'package:eb_tech_task/core/resources/app_constant.dart';
 import 'package:eb_tech_task/core/resources/color_manager.dart';
+import 'package:eb_tech_task/core/resources/routes_manager.dart';
 import 'package:eb_tech_task/core/share/custom_button.dart';
+import 'package:eb_tech_task/features/home/presentation/pages/product_details.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/home/exploreNow.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/home/product_card.dart';
 import 'package:eb_tech_task/main.dart';
@@ -116,7 +118,11 @@ class _HomePageState extends State<HomePage> {
                   itemCount: state.products.length,
                   separatorBuilder: (_, _) => Gap(10.h),
                   itemBuilder: (context, index) {
-                    return ProductCard(product: state.products[index]);
+                    return InkWell(
+                        onTap: (){
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetails(product: state.products[index],)));
+                        },
+                        child: ProductCard(product: state.products[index]));
                   },
                 );
               } else if (state is ProductError) {

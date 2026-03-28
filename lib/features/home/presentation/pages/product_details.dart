@@ -1,6 +1,7 @@
 import 'package:eb_tech_task/core/resources/color_manager.dart';
 import 'package:eb_tech_task/core/resources/style_manager.dart';
 import 'package:eb_tech_task/core/share/custom_button.dart';
+import 'package:eb_tech_task/features/home/data/models/product_model.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/custom_app_bar.dart';
 import 'package:eb_tech_task/main.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
-
+   ProductDetails({super.key, this.product});
+   ProductModel ?product;
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
 }
@@ -19,6 +20,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   int quantity=1;
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManager.primary,
       appBar: CustomAppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
@@ -55,24 +57,24 @@ class _ProductDetailsState extends State<ProductDetails> {
               height: 390.h,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/product.png'),
+                  image: NetworkImage(widget.product!.image),
                   fit: BoxFit.fill,
                 ),
               ),
             ),
-            Gap(10.h),
+            Gap(15.h),
             Text(
-              'Amber Solis Vessel',
+              widget.product!.title,
               style: getBoldStyle(
                 color: ColorManager.secondaryText,
-                fontSize: 24.sp,
+                fontSize: 20.sp,
               ),
             ),
-            Gap(3.h),
+            Gap(10.h),
             Row(
               children: [
                 Text(
-                  '\$ 16',
+                  '\$ ${widget.product!.price}',
                   style: getBoldStyle(
                     color: ColorManager.primaryText,
                     fontSize: 22.sp,
@@ -80,16 +82,28 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
                 Spacer(),
                 Icon(Icons.star, color: Colors.orange, size: 22.r),
-                Text(
-                  '4.9',
-                  style: getRegularStyle(
-                    color: Colors.deepOrange,
-                    fontSize: 18.sp,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      '${widget.product!.rating.rate}',
+                      style: getRegularStyle(
+                        color: Colors.deepOrange,
+                        fontSize: 18.sp,
+                      ),
+                    ),
+                    Gap(5.w),
+                    Text(
+                      'Reviews(${widget.product!.rating.count})',
+                      style: getRegularStyle(
+                        color: Colors.deepOrange,
+                        fontSize: 18.sp,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            Gap(15.h),
+            Gap(20.h),
             Text(
               'The Story',
               style: getRegularStyle(
@@ -99,12 +113,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             Gap(10.h),
             Text(
-              ''' Hand-blown by master artisans in
- Murano, the Solis Vessel captures the
- essence of the golden hour. Its
- undulating silhouette is designed to
- manipulate natural light, casting warm,
- rhythmic shadows across any surface it inhabits.''',
+              '''${widget.product!.description}''',
               style: getRegularStyle(
                 color: ColorManager.primaryText,
                 fontSize: 18.sp,
