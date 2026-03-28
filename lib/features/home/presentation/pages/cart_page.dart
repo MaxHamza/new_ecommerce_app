@@ -35,10 +35,19 @@ class CartPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final item = state.items[index];
                     return ListTile(
+                      isThreeLine: true,
                       leading: Image.network(item.image),
                       title: Text(item.title),
-                      subtitle: Text('x${item.quantity}'),
-                      trailing: Text('\$${item.price}'),
+                      subtitle: Row(
+                        children: [
+                          Text('x${item.quantity}',style: TextStyle(fontSize: 14.sp),),
+                           Spacer(),
+                           Text('\$${item.price}',style: TextStyle(fontSize: 14.sp),),
+                        ],
+                      ),
+                      trailing: IconButton(onPressed: (){
+                        context.read<CartCubit>().removeItem(index);
+                      }, icon: Icon(Icons.close,size: 22.r,)),
                     );
                   },
                   separatorBuilder: (_, __) => Gap(10.h),
