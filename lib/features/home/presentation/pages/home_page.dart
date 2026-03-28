@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
               if (state is ProductLoading) {
-                return Container(
+                return SizedBox(
                     height: 200.h,
                     child: Center(child: CircularProgressIndicator()));
               } else if (state is ProductSuccess) {
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: state.products.length,
-                  separatorBuilder: (_, __) => Gap(10.h),
+                  separatorBuilder: (_, _) => Gap(10.h),
                   itemBuilder: (context, index) {
                     return ProductCard(product: state.products[index]);
                   },
