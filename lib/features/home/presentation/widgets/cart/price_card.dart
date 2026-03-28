@@ -8,7 +8,7 @@ import '../../../../../core/resources/style_manager.dart';
 
 class PriceCard extends StatefulWidget {
   const PriceCard({super.key,required this.price});
-final  int price;
+final  double price;
   @override
   State<PriceCard> createState() => _PriceCardState();
 }

@@ -5,8 +5,13 @@ import 'package:eb_tech_task/features/home/data/models/product_model.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/custom_app_bar.dart';
 import 'package:eb_tech_task/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+
+import '../../data/models/cart_model.dart';
+import '../manager/cart/cubit.dart';
+import '../manager/cart/state.dart';
 
 class ProductDetails extends StatefulWidget {
    ProductDetails({super.key, this.product});
@@ -162,11 +167,21 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
                 Gap(10.w),
                 Expanded(
-                  child: CustomButton(
-                    title: 'Add To Cart',
-                    padding: EdgeInsets.all(10.r),
-                    height: 50.h,
-                  ),
+                  child:  CustomButton(
+                        title:  'Add To Cart',
+                        height: 50.h,
+                        onTap: () {
+                          context.read<CartCubit>().addToCart(
+                            CartProduct(
+                              productId: widget.product!.id,
+                              title: widget.product!.title,
+                              price: widget.product!.price,
+                              image: widget.product!.image,
+                              quantity: quantity,
+                            ),
+                          );
+                    },
+                  )
                 ),
               ],
             ),

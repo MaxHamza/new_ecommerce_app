@@ -1,7 +1,10 @@
+import 'package:eb_tech_task/core/resources/api.dart';
 import 'package:eb_tech_task/core/resources/app_constant.dart';
 import 'package:eb_tech_task/core/resources/color_manager.dart';
 import 'package:eb_tech_task/core/resources/routes_manager.dart';
 import 'package:eb_tech_task/core/share/custom_button.dart';
+import 'package:eb_tech_task/features/home/data/repositories/cart_repository.dart';
+import 'package:eb_tech_task/features/home/presentation/manager/cart/cubit.dart';
 import 'package:eb_tech_task/features/home/presentation/pages/product_details.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/home/exploreNow.dart';
 import 'package:eb_tech_task/features/home/presentation/widgets/home/product_card.dart';
@@ -119,8 +122,14 @@ class _HomePageState extends State<HomePage> {
                   separatorBuilder: (_, _) => Gap(10.h),
                   itemBuilder: (context, index) {
                     return InkWell(
-                        onTap: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetails(product: state.products[index],)));
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) =>
+                                  BlocProvider(
+                                    create: (context) => CartCubit(CartRepository()),
+                                    child: ProductDetails(
+                                      product: state.products[index],),
+                                  )));
                         },
                         child: ProductCard(product: state.products[index]));
                   },

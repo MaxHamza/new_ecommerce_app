@@ -1,6 +1,8 @@
 import 'package:eb_tech_task/core/resources/api.dart';
 import 'package:eb_tech_task/core/resources/color_manager.dart';
+import 'package:eb_tech_task/features/home/data/repositories/cart_repository.dart';
 import 'package:eb_tech_task/features/home/data/repositories/product_repository.dart';
+import 'package:eb_tech_task/features/home/presentation/manager/cart/cubit.dart';
 import 'package:eb_tech_task/features/home/presentation/manager/fetch_products/cubit.dart';
 import 'package:eb_tech_task/features/home/presentation/pages/cart_page.dart';
 import 'package:eb_tech_task/features/home/presentation/pages/insert_product.dart';
@@ -25,9 +27,12 @@ class _MainPageState extends State<MainPage> {
 
   final pages = [
     BlocProvider(
-        create: (context)=>ProductCubit(ProductRepository(DioService())),
+        create: (context) => ProductCubit(ProductRepository(DioService())),
         child: HomePage())
-    , CartPage(),
+    , BlocProvider(
+      create: (context) => CartCubit(CartRepository()),
+      child: CartPage(),
+    ),
     InsertProduct()];
 
   @override
