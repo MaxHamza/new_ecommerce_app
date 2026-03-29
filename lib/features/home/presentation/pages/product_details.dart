@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:eb_tech_task/core/resources/color_manager.dart';
 import 'package:eb_tech_task/core/resources/style_manager.dart';
 import 'package:eb_tech_task/core/share/custom_button.dart';
@@ -65,8 +66,12 @@ class _ProductDetailsState extends State<ProductDetails> {
               height: 390.h,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.product!.image),
-                  fit: BoxFit.fill,
+                  image: widget.product!.image.isNotEmpty
+                      ? (widget.product!.image.startsWith('http')
+                            ? NetworkImage(widget.product!.image)
+                            : FileImage(File(widget.product!.image)) as ImageProvider)
+                      : const NetworkImage("https://via.placeholder.com/150"),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -121,7 +126,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             Gap(10.h),
             Text(
-              '''${widget.product!.description}''',
+              widget.product!.description,
               style: getRegularStyle(
                 color: ColorManager.primaryText,
                 fontSize: 18.sp,
@@ -176,9 +181,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                     title: 'Add To Cart',
                     height: 50.h,
                     onTap: () {
+                      print("PRODUCT ID: ${widget.product?.id}");
                       context.read<CartCubit>().addToCart(
                         CartProduct(
-                          productId: widget.product!.id,
+                          productId: widget.product?.id ?? DateTime.now().millisecondsSinceEpoch,
                           title: widget.product!.title,
                           price: widget.product!.price,
                           image: widget.product!.image,
@@ -190,7 +196,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                           duration: Duration(microseconds: 700),
                           content: Text(
                             'Product Added Successfully',
-                            style: TextStyle(color: Colors.white,fontSize: 16.sp),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                            ),
                           ),
                           backgroundColor: Colors.green,
                         ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:eb_tech_task/core/resources/color_manager.dart';
 import 'package:eb_tech_task/core/resources/style_manager.dart';
 import 'package:eb_tech_task/main.dart';
@@ -21,35 +23,14 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// 🔥 IMAGE (safe + placeholder)
+            /// IMAGE
             Center(
-              child: Image.network(
-                product.image.isNotEmpty
-                    ? product.image
-                    : "https://via.placeholder.com/150",
-
-                height: 180.h,
-                width: double.infinity,
-                fit: BoxFit.contain,
-
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 180.h,
-                    width: double.infinity,
-                    color: Colors.grey.shade200,
-                    child: Icon(
-                      Icons.image_not_supported,
-                      size: 40,
-                      color: Colors.grey,
-                    ),
-                  );
-                },
-              ),
+              child: _buildProductImage(),
             ),
 
             Gap(10.h),
 
-            /// 🔥 TITLE + CATEGORY
+            ///  TITLE + CATEGORY
             Text(
               product.title,
               maxLines: 1,
@@ -72,7 +53,7 @@ class ProductCard extends StatelessWidget {
 
             Gap(10.h),
 
-            /// 🔥 PRICE
+            ///  PRICE
             Align(
               alignment: Alignment.centerRight,
               child: Text(
@@ -85,6 +66,43 @@ class ProductCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+  Widget _buildProductImage() {
+  return  product.image.isNotEmpty
+        ? (product.image.startsWith('http')
+        ? Image.network(
+      product.image,
+      height: 180.h,
+      width: double.infinity,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) {
+        return _buildErrorImage();
+      },
+    )
+        : Image.file(
+      File(product.image),
+      height: 180.h,
+      width: double.infinity,
+      fit: BoxFit.contain,
+    ))
+        : Image.network(
+      "https://via.placeholder.com/150",
+      height: 180.h,
+      width: double.infinity,
+      fit: BoxFit.contain,
+    );
+  }
+  Widget _buildErrorImage() {
+    return Container(
+      height: 180.h,
+      width: double.infinity,
+      color: Colors.grey.shade200,
+      child: Icon(
+        Icons.image_not_supported,
+        size: 40.r,
+        color: Colors.grey,
       ),
     );
   }

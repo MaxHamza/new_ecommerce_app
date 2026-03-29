@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import '../models/cart_model.dart';
-
 class CartRepository {
   final Box<CartProduct> box = Hive.box<CartProduct>('cartBox');
 
@@ -9,12 +8,12 @@ class CartRepository {
   }
 
   void addToCart(CartProduct product) {
-    final existingIndex = box.values.toList().indexWhere(
-          (e) => e.productId == product.productId,
+    final index = box.values.toList().indexWhere(
+          (item) => item.productId == product.productId,
     );
 
-    if (existingIndex != -1) {
-      final existing = box.getAt(existingIndex)!;
+    if (index != -1) {
+      final existing = box.getAt(index)!;
       existing.quantity += product.quantity;
       existing.save();
     } else {

@@ -42,11 +42,10 @@ class _HomePageState extends State<HomePage> {
       color: ColorManager.primary,
       child: ListView(
         children: [
-          const Gap(10),
+           Gap(10.h),
           ExploreNow(),
-          const Gap(20),
-
-          ///  عرض المنتجات المضافة يدويا
+           Gap(20.h),
+          // المنتجات المضافة يدويا
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
               final manualProducts = context.read<ProductCubit>().addedProducts;
@@ -66,19 +65,17 @@ class _HomePageState extends State<HomePage> {
                       child: ProductCard(product: p),
                     ),
                   )),
-                  const Divider(thickness: 1.5),
+                   Divider(thickness: 1.5.h),
                   Gap(10.h),
                 ],
               );
             },
           ),
 
-          /// 🔥 Categories
+          ///  Categories
           _buildCategoryList(),
 
           Gap(20.h),
-
-          /// 🔥 قائمة منتجات الـ API
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
               if (state is ProductLoading) return _buildLoading();
@@ -101,7 +98,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // --- Helper Widgets لإبقاء الـ Build نظيف ---
   Widget _buildSectionTitle(String title, IconData icon) => Row(
     children: [
       Icon(icon, color: ColorManager.activeButton, size: 20.sp),

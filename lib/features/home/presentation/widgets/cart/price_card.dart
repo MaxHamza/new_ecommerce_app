@@ -64,7 +64,7 @@ class _PriceCardState extends State<PriceCard> {
             ],
           ),
           Gap(10.h),
-          Container(height: 1,color: Colors.grey[300],),
+          Container(height: 1.h,color: Colors.grey[300],),
           Gap(10.h),
           Row(
             children: [

@@ -8,7 +8,6 @@ class InsertProductCubit extends Cubit<InsertProductState> {
 
   InsertProductCubit(this.repository) : super(InsertProductInitial());
 
-  // تم تغيير النوع هنا ليعيد المنتج المستلم من الـ API
   Future<ProductModel> addProduct({
     required String title,
     required double price,
@@ -27,10 +26,10 @@ class InsertProductCubit extends Cubit<InsertProductState> {
       );
 
       emit(InsertProductSuccess(product));
-      return product; // ضروري جداً لكي يعمل سطر الـ UI لديك
+      return product;
     } catch (e) {
       emit(InsertProductError(e.toString()));
-      rethrow; // نستخدم rethrow لكي يتوقف الكود في الـ UI عند حدوث خطأ ولا ينفذ Navigator.pop
+      rethrow;
     }
   }
 }

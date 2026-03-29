@@ -24,6 +24,13 @@ class AddProductRepository {
      },
    );
 
-   return ProductModel.fromJson(response.data);
+   return  ProductModel(
+     id: DateTime.now().millisecondsSinceEpoch,
+     title: title,
+     price: (price as num).toDouble(),
+     description: description,
+     image: image,
+     category: category, rating: RatingModel(rate: 0.0, count: 0),
+   );;
  }
 }

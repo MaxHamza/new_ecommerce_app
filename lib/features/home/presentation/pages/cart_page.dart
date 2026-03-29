@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:eb_tech_task/core/resources/style_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,12 +11,21 @@ import '../manager/cart/cubit.dart';
 import '../manager/cart/state.dart';
 import '../widgets/cart/cart_item.dart';
 import '../widgets/cart/price_card.dart';
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
   @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+
+@override
+  void initState() {
+      context.read<CartCubit>().loadCart();
+    super.initState();
+  }
   Widget build(BuildContext context) {
-    context.read<CartCubit>().loadCart();
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -36,7 +47,22 @@ class CartPage extends StatelessWidget {
                     final item = state.items[index];
                     return ListTile(
                       isThreeLine: true,
-                      leading: Image.network(item.image),
+                      leading: item.image.startsWith('http')
+                          ? Image.network(
+                        item.image,
+                        width: 50.w,
+                        height: 50.h,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return _buildErrorImage();
+                        },
+                      )
+                          : Image.file(
+                        File(item.image),
+                        width: 50.w,
+                        height: 50.h,
+                        fit: BoxFit.cover,
+                      ),
                       title: Text(item.title),
                       subtitle: Row(
                         children: [
@@ -65,4 +91,16 @@ class CartPage extends StatelessWidget {
       ),
     );
   }
+Widget _buildErrorImage() {
+  return Container(
+    width: 50.w,
+    height: 50.h,
+    color: Colors.grey.shade200,
+    child: Icon(
+      Icons.image_not_supported,
+      size: 20.r,
+      color: Colors.grey,
+    ),
+  );
+}
 }
