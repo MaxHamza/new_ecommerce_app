@@ -1,39 +1,100 @@
 # eb_tech_task
 
 A new Flutter project.
+# 🛒 New E-Commerce Flutter App
 
-## Getting Started
+## 📱 Overview
 
-A Flutter application that displays posts and allows users to view post details, read comments, and add new comments. The app uses Firebase Firestore for data storage and Provider for state management.
-________________________________________
-Features
-•	View a list of posts.
-•	View details of each post.
-•	View comments for a specific post.
-•	Add a new comment with name, email, and text.
-•	Automatically updates the comments count after adding a comment.
-•	Uses Firebase Firestore to store posts and comments.
-________________________________________
-________________________________________
-Packages Used
-•	cupertino_icons: ^1.0.8
-•	flutter_screenutil: ^5.9.3 (Responsive UI)
-•	go_router: ^17.0.1 (Navigation)
-•	gap: ^3.0.1 (Spacing)
-•	provider: ^6.1.5+1 (State management)
-•	firebase_core: ^4.3.0 (Firebase initialization)
-•	firebase_storage: ^13.0.5 (Upload and store images)
-•	cloud_firestore: ^6.1.1 (Firestore database
+This is a simple E-Commerce mobile application built using Flutter.  
+The app allows users to browse products, view product details, manage a shopping cart, and add new products to the store using Fake Store API.
 
-Used Technologies
+The project was developed as a technical task within a limited deadline.
+
+---
+
+## 🚀 Features
+
+### 🏠 Home Page
+- Display all products from Fake Store API
+- Display product categories
+- Clean and responsive UI
+
+### 📦 Product Details Page
+- Show full product information
+- Display image, title, price, and description
+- Add product to cart
+
+### 🛒 Cart Page
+- Display selected products
+- Manage product quantity
+- Remove products from cart
+- Calculate total price dynamically
+
+### ➕ Add Product Page
+- Add new product to store using POST API
+- Form validation
+- Send data to Fake Store API
+
+---
+
+#### 🌐 API Used
+
+This project uses Fake Store API:
+
+https://fakestoreapi.com/docs
+
+### Endpoints used:
+- GET /products
+- GET /products/categories
+- POST /products
+
+---
+
+## 🧱 Tech Stack
+
 - Flutter
 - Dart
-- Firebase Firestore
-- MVVM Architecture
-- Material UI
+- Dio (HTTP requests)
+- Hive (Local storage)
+- Cubit / Bloc (State Management)
 
-## Notes
-- The project contains two screens:
-  - Add Post screen with Firebase integration
-  - Post Details screen with comments
-    
+---
+
+### 📦 Project Structure
+lib/
+├── core/
+├── features/
+│ ├── home/
+│ ├── product_details/
+│ ├── cart/
+│ ├── add_product/
+├── main.dart
+
+
+---
+
+## 🛠️ How to Run
+
+bash
+git clone https://github.com/MaxHamza/new_ecommerce_app.git
+cd new_ecommerce_app
+flutter pub get
+flutter run
+
+## 🧠 Notes
+Cart is stored locally using Hive
+Products are fetched from Fake Store API
+Add Product uses POST request (Fake Store behavior)
+App is built with clean architecture principles
+
+## 👨‍💻 Developer
+Name: Hamza
+Role: Flutter Developer
+Focus: Mobile Development
+
+## 📌 Task Completion Status
+
+✔ Home Page
+✔ Product Details
+✔ Cart Page
+✔ Add Product Feature

@@ -11,7 +11,6 @@ import 'package:eb_tech_task/features/home/presentation/pages/insert_product.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../core/resources/style_manager.dart';
 import '../widgets/bottomNavBar.dart';
 import '../widgets/custom_app_bar.dart';
