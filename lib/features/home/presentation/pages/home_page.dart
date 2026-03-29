@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           ExploreNow(),
           const Gap(20),
 
-          /// 🔥 عرض المنتجات المضافة يدوياً (أداء أفضل بدون ListView متداخل)
+          ///  عرض المنتجات المضافة يدويا
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
               final manualProducts = context.read<ProductCubit>().addedProducts;
@@ -57,9 +57,14 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   _buildSectionTitle("Newly Added by You", Icons.stars),
                   Gap(10.h),
-                  ...manualProducts.map((p) => Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: ProductCard(product: p),
+                  ...manualProducts.map((p) => InkWell(
+                    onTap: (){
+                      _navigateToDetails(context,p);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 10.h),
+                      child: ProductCard(product: p),
+                    ),
                   )),
                   const Divider(thickness: 1.5),
                   Gap(10.h),

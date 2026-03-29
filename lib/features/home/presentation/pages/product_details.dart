@@ -14,15 +14,18 @@ import '../manager/cart/cubit.dart';
 import '../manager/cart/state.dart';
 
 class ProductDetails extends StatefulWidget {
-   ProductDetails({super.key, this.product});
-   ProductModel ?product;
+  ProductDetails({super.key, this.product});
+
+  ProductModel? product;
+
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
   @override
-  int quantity=1;
+  int quantity = 1;
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.primary,
@@ -140,11 +143,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                         IconButton(
                           onPressed: () {
                             setState(() {
-                              quantity>1?
-                              quantity--:quantity;
+                              quantity > 1 ? quantity-- : quantity;
                             });
                           },
-                          icon: Transform.translate(offset:Offset(0, -6) ,child: Icon(Icons.minimize),),
+                          icon: Transform.translate(
+                            offset: Offset(0, -6),
+                            child: Icon(Icons.minimize),
+                          ),
                           iconSize: 22.r,
                           alignment: Alignment.topCenter,
                         ),
@@ -167,21 +172,31 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
                 Gap(10.w),
                 Expanded(
-                  child:  CustomButton(
-                        title:  'Add To Cart',
-                        height: 50.h,
-                        onTap: () {
-                          context.read<CartCubit>().addToCart(
-                            CartProduct(
-                              productId: widget.product!.id,
-                              title: widget.product!.title,
-                              price: widget.product!.price,
-                              image: widget.product!.image,
-                              quantity: quantity,
-                            ),
-                          );
+                  child: CustomButton(
+                    title: 'Add To Cart',
+                    height: 50.h,
+                    onTap: () {
+                      context.read<CartCubit>().addToCart(
+                        CartProduct(
+                          productId: widget.product!.id,
+                          title: widget.product!.title,
+                          price: widget.product!.price,
+                          image: widget.product!.image,
+                          quantity: quantity,
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(microseconds: 700),
+                          content: Text(
+                            'Product Added Successfully',
+                            style: TextStyle(color: Colors.white,fontSize: 16.sp),
+                          ),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
                     },
-                  )
+                  ),
                 ),
               ],
             ),

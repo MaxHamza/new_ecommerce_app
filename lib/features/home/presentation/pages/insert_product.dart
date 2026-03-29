@@ -34,7 +34,17 @@ class _InsertProductState extends State<InsertProduct> {
 
   void _submitData() async {
     if (!formKey.currentState!.validate() || selectedCategory == null) {
-      if (selectedCategory == null) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Select category")));
+      if (selectedCategory == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Select Product',
+            style: TextStyle(color: Colors.white,fontSize: 16.sp),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+      }
       return;
     }
 
@@ -48,7 +58,15 @@ class _InsertProductState extends State<InsertProduct> {
 
     if (mounted) {
       context.read<ProductCubit>().addLocalProduct(product);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Product added successfully")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Product Added Successfully',
+            style: TextStyle(color: Colors.white,fontSize: 16.sp),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
   }
 
@@ -61,7 +79,15 @@ class _InsertProductState extends State<InsertProduct> {
         child: BlocConsumer<InsertProductCubit, InsertProductState>(
           listener: (context, state) {
             if (state is InsertProductError) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.message,
+                    style: TextStyle(color: Colors.white,fontSize: 16.sp),
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+              );
             }
           },
           builder: (context, state) {
