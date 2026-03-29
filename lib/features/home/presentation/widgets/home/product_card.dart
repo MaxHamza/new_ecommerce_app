@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import '../../../data/models/product_model.dart';
-
 class ProductCard extends StatelessWidget {
   final ProductModel product;
 
@@ -16,54 +15,74 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: ColorManager.primary,
+      elevation: 2,
       child: Padding(
-        padding: EdgeInsets.all(8.r),
+        padding: EdgeInsets.all(10.r),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              product.image,
-              height: 200.h,
-              width: width,
-              fit: BoxFit.contain,
+            /// 🔥 IMAGE (safe + placeholder)
+            Center(
+              child: Image.network(
+                product.image.isNotEmpty
+                    ? product.image
+                    : "https://via.placeholder.com/150",
+
+                height: 180.h,
+                width: double.infinity,
+                fit: BoxFit.contain,
+
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 180.h,
+                    width: double.infinity,
+                    color: Colors.grey.shade200,
+                    child: Icon(
+                      Icons.image_not_supported,
+                      size: 40,
+                      color: Colors.grey,
+                    ),
+                  );
+                },
+              ),
             ),
 
             Gap(10.h),
 
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getBoldStyle(
-                          color: ColorManager.secondaryText,
-                          fontSize: 16.sp,
-                        ),
-                      ),
-                      Text(
-                        product.category,
-                        style: getRegularStyle(
-                          color: ColorManager.primaryText,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+            /// 🔥 TITLE + CATEGORY
+            Text(
+              product.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: getBoldStyle(
+                color: ColorManager.secondaryText,
+                fontSize: 16.sp,
+              ),
+            ),
 
-                Text(
-                  '${product.price}\$',
-                  style: getRegularStyle(
-                    color: ColorManager.primaryText,
-                    fontSize: 16.sp,
-                  ),
+            Gap(5.h),
+
+            Text(
+              product.category,
+              style: getRegularStyle(
+                color: ColorManager.primaryText,
+                fontSize: 13.sp,
+              ),
+            ),
+
+            Gap(10.h),
+
+            /// 🔥 PRICE
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                "${product.price.toStringAsFixed(2)} \$",
+                style: getBoldStyle(
+                  color: ColorManager.activeButton,
+                  fontSize: 16.sp,
                 ),
-              ],
-            )
+              ),
+            ),
           ],
         ),
       ),

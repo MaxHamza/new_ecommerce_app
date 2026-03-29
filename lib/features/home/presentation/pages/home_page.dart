@@ -15,9 +15,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/resources/style_manager.dart';
+import '../../data/models/product_model.dart';
 import '../manager/fetch_products/cubit.dart';
 import '../manager/fetch_products/state.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -27,14 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
-
-  final categories = [
-    "all",
-    "men's clothing",
-    "women's clothing",
-    "jewelery",
-    "electronics",
-  ];
+  final categories = AppConstant.categories;
 
   @override
   void initState() {
@@ -49,99 +42,110 @@ class _HomePageState extends State<HomePage> {
       color: ColorManager.primary,
       child: ListView(
         children: [
-          Gap(10.h),
+          const Gap(10),
           ExploreNow(),
-          Gap(10.h),
+          const Gap(20),
 
-          /// 🔥 categories
-          SizedBox(
-            height: 30.h,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
-              separatorBuilder: (_, __) => Gap(5.w),
-              itemBuilder: (context, index) {
-                final isSelected = selectedIndex == index;
+          /// 🔥 عرض المنتجات المضافة يدوياً (أداء أفضل بدون ListView متداخل)
+          BlocBuilder<ProductCubit, ProductState>(
+            builder: (context, state) {
+              final manualProducts = context.read<ProductCubit>().addedProducts;
+              if (manualProducts.isEmpty) return const SizedBox.shrink();
 
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = index;
-                    });
-
-                    context
-                        .read<ProductCubit>()
-                        .filterByCategory(categories[index]);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.r),
-                      color: isSelected ? null : ColorManager.secondary,
-                      gradient: isSelected
-                          ? LinearGradient(
-                        colors: [
-                          ColorManager.activeButton,
-                          Color(0xffFF784D),
-                        ],
-                      )
-                          : null,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      categories[index] == "all"
-                          ? "All Objects"
-                          : categories[index],
-                      style: getRegularStyle(
-                        color: isSelected
-                            ? ColorManager.white
-                            : ColorManager.primaryText,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSectionTitle("Newly Added by You", Icons.stars),
+                  Gap(10.h),
+                  ...manualProducts.map((p) => Padding(
+                    padding: EdgeInsets.only(bottom: 10.h),
+                    child: ProductCard(product: p),
+                  )),
+                  const Divider(thickness: 1.5),
+                  Gap(10.h),
+                ],
+              );
+            },
           ),
+
+          /// 🔥 Categories
+          _buildCategoryList(),
 
           Gap(20.h),
 
-          /// 🔥 products
+          /// 🔥 قائمة منتجات الـ API
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
-              if (state is ProductLoading) {
-                return SizedBox(
-                    height: 200.h,
-                    child: Center(child: CircularProgressIndicator()));
-              } else if (state is ProductSuccess) {
-                return ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: state.products.length,
-                  separatorBuilder: (_, _) => Gap(10.h),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) =>
-                                  BlocProvider(
-                                    create: (context) => CartCubit(CartRepository()),
-                                    child: ProductDetails(
-                                      product: state.products[index],),
-                                  )));
-                        },
-                        child: ProductCard(product: state.products[index]));
-                  },
-                );
-              } else if (state is ProductError) {
-                return Text(state.message);
-              }
-              return SizedBox();
+              if (state is ProductLoading) return _buildLoading();
+              if (state is ProductError) return Center(child: Text(state.message));
+
+              final products = state is ProductSuccess ? state.products : <ProductModel>[];
+              return Column(
+                children: products.map((product) => InkWell(
+                  onTap: () => _navigateToDetails(context, product),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 15.h),
+                    child: ProductCard(product: product),
+                  ),
+                )).toList(),
+              );
             },
           ),
         ],
       ),
     );
+  }
+
+  // --- Helper Widgets لإبقاء الـ Build نظيف ---
+  Widget _buildSectionTitle(String title, IconData icon) => Row(
+    children: [
+      Icon(icon, color: ColorManager.activeButton, size: 20.sp),
+      const Gap(8),
+      Text(title, style: getBoldStyle(color: ColorManager.primaryText, fontSize: 18.sp)),
+    ],
+  );
+
+  Widget _buildCategoryList() => SizedBox(
+    height: 35.h,
+    child: ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: categories.length,
+      separatorBuilder: (_, __) => Gap(8.w),
+      itemBuilder: (context, index) => _buildCategoryItem(index),
+    ),
+  );
+
+  Widget _buildCategoryItem(int index) {
+    final isSelected = selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedIndex = index);
+        context.read<ProductCubit>().filterByCategory(categories[index]);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25.r),
+          color: isSelected ? null : ColorManager.secondary,
+          gradient: isSelected ? LinearGradient(colors: [ColorManager.activeButton, const Color(0xffFF784D)]) : null,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          categories[index] == "all" ? "All Products" : categories[index],
+          style: getRegularStyle(color: isSelected ? ColorManager.white : ColorManager.primaryText, fontSize: 14.sp),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoading() => SizedBox(height: 200.h, child: const Center(child: CircularProgressIndicator()));
+
+  void _navigateToDetails(BuildContext context, ProductModel product) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => BlocProvider(
+        create: (context) => CartCubit(CartRepository()),
+        child: ProductDetails(product: product),
+      ),
+    ));
   }
 }
